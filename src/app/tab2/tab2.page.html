@@ -3,14 +3,26 @@
     <ion-input readonly="true" label="Senhas Atendidas: "></ion-input>
   </ion-card-header>
 
-  <ion-button expand="block" color="primary" (click)="senhasService.chamarSenha()">Chamar próxima senha</ion-button>
+  <ion-button
+    expand="block"
+    color="primary"
+    (click)="senhasService.chamarSenha()"
+    >Chamar próxima senha</ion-button
+  >
 </ion-card>
 
-<ion-card *ngIf="senhasService.senhaChamada && senhasService.inputNovaSenha !== 'Não há mais senhas'">
+<ion-card
+  *ngIf="senhasService.senhaChamada && senhasService.inputNovaSenha !== 'Não há mais senhas'"
+>
   <ion-card-content>
     <ion-list-header>Senhas atendidas:</ion-list-header>
   </ion-card-content>
   <ion-item>
+    <ion-icon
+      [name]="iconName(senhasService.senhasChamadas[senhasService.senhasChamadas.length - 1].tipo)"
+      [color]="iconColor(senhasService.senhasChamadas[senhasService.senhasChamadas.length - 1].tipo)"
+      slot="start"
+    ></ion-icon>
     <ion-label>{{ senhasService.inputNovaSenha }}</ion-label>
   </ion-item>
 </ion-card>
