@@ -1,17 +1,31 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-card>
+  <ion-card-header>
+    <ion-input readonly="true" label="Escolha sua senha: "></ion-input>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-button expand="block" color="primary" (click)="senhasService.novaSenha('SG')">Senha Geral</ion-button>
+    <ion-button expand="block" color="success" (click)="senhasService.novaSenha('SP')">Senha Prioritária</ion-button>
+    <ion-button expand="block" color="warning" (click)="senhasService.novaSenha('SE')">Senha Exame</ion-button>
+  </ion-card-content>
+</ion-card>
+<ion-card>
+  <ion-card-content>
+    <ion-list-header>Últimas Senhas Gerada:</ion-list-header>
+  </ion-card-content>
+  <ion-item *ngFor="let senha of senhasService.senhasArray.SG">
+    <ion-icon name="accessibility" color="primary" slot="start"></ion-icon>
+    <ion-label>{{ senha }}</ion-label>
+  </ion-item>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item *ngFor="let senha of senhasService.senhasArray.SP">
+    <ion-icon name="bandage" color="success" slot="start"></ion-icon>
+    <ion-label>{{ senha }}</ion-label>
+  </ion-item>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
-</ion-content>
+  <ion-item *ngFor="let senha of senhasService.senhasArray.SE">
+    <ion-icon name="document" color="warning" slot="start"></ion-icon>
+    <ion-label>{{ senha }}</ion-label>
+  </ion-item>
+  
+</ion-card>
+

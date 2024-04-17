@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SenhasService } from '../services/senhas.service';
 
 @Component({
   selector: 'app-tab2',
@@ -6,7 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-
-  constructor() {}
-
+  constructor(public senhasService: SenhasService) {}
 }
