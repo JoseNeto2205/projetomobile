@@ -5,19 +5,16 @@
       <ion-item>
         <ion-label>Senhas emitidas:</ion-label>
         <ion-label>
-          <span *ngFor="let senha of senhasService.senhasArray.SG; let i = index">
-            {{ senha }}{{ i !== senhasService.senhasArray.SG.length - 1 ? ', ' : '' }}
+          <span *ngFor="let senha of senhasService.senhas">
+            {{ senha.numero }} ({{ senha.tipo }}),
           </span>
-          <span *ngFor="let senha of senhasService.senhasArray.SP; let i = index">
-            {{ senha }}{{ i !== senhasService.senhasArray.SP.length - 1 ? ', ' : '' }}
-          </span>
-          <span *ngFor="let senha of senhasService.senhasArray.SE; let i = index">
-            {{ senha }}{{ i !== senhasService.senhasArray.SE.length - 1 ? ', ' : '' }}
+          <span *ngFor="let senha of senhasService.senhasChamadas">
+            {{ senha.numero }} ({{ senha.tipo }}),
           </span>
         </ion-label>
       </ion-item>
       <ion-item>Senhas Geral: {{senhasService.senhasGeral}}</ion-item>
-      <ion-item>Senhas Prioritária:{{senhasService.senhasPrior}}</ion-item>
+      <ion-item>Senhas Prioritária: {{senhasService.senhasPrior}}</ion-item>
       <ion-item>Senhas Exame: {{senhasService.senhasExame}}</ion-item>
       <ion-item>Senhas Total: {{senhasService.senhasTotal}}</ion-item>
     </ion-list>
