@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
-interface Senha {
+export interface Senha {
   tipo: string;
   numero: string;
+  dataHoraGeracao: Date; // Adicionando o campo de data e hora de geração
+  tempoDecorrido?: string; // Adicionando o campo de tempo decorrido
 }
 
 @Injectable({
@@ -34,43 +36,50 @@ export class SenhasService {
   }
 
   novaSenha(tipoSenha: string = '') {
-    const data = new Date();
-    let senha: Senha = { tipo: '', numero: '' };
+    const dataHoraGeracao = new Date(); // Armazenar a data e hora de geração
+    let senha: Senha = {
+      tipo: '',
+      numero: '',
+      dataHoraGeracao: dataHoraGeracao,
+    };
     if (tipoSenha == 'SG') {
       this.somaGeral();
       senha = {
         tipo: 'SG',
         numero:
-          data.getFullYear().toString().substring(2, 4) +
-          (data.getMonth() + 1).toString().padStart(2, '0') +
-          data.getDate().toString().padStart(2, '0') +
+          dataHoraGeracao.getFullYear().toString().substring(2, 4) +
+          (dataHoraGeracao.getMonth() + 1).toString().padStart(2, '0') +
+          dataHoraGeracao.getDate().toString().padStart(2, '0') +
           '-' +
           tipoSenha +
           this.senhasGeral.toString().padStart(2, '0'),
+        dataHoraGeracao: dataHoraGeracao,
       };
     } else if (tipoSenha == 'SP') {
       this.somaPrior();
       senha = {
         tipo: 'SP',
         numero:
-          data.getFullYear().toString().substring(2, 4) +
-          (data.getMonth() + 1).toString().padStart(2, '0') +
-          data.getDate().toString().padStart(2, '0') +
+          dataHoraGeracao.getFullYear().toString().substring(2, 4) +
+          (dataHoraGeracao.getMonth() + 1).toString().padStart(2, '0') +
+          dataHoraGeracao.getDate().toString().padStart(2, '0') +
           '-' +
           tipoSenha +
           this.senhasPrior.toString().padStart(2, '0'),
+        dataHoraGeracao: dataHoraGeracao,
       };
     } else if (tipoSenha == 'SE') {
       this.somaExame();
       senha = {
         tipo: 'SE',
         numero:
-          data.getFullYear().toString().substring(2, 4) +
-          (data.getMonth() + 1).toString().padStart(2, '0') +
-          data.getDate().toString().padStart(2, '0') +
+          dataHoraGeracao.getFullYear().toString().substring(2, 4) +
+          (dataHoraGeracao.getMonth() + 1).toString().padStart(2, '0') +
+          dataHoraGeracao.getDate().toString().padStart(2, '0') +
           '-' +
           tipoSenha +
           this.senhasExame.toString().padStart(2, '0'),
+        dataHoraGeracao: dataHoraGeracao,
       };
     }
     this.senhas.push(senha);
@@ -78,40 +87,39 @@ export class SenhasService {
   }
 
   chamarSenha() {
-    if (this.senhas.length > 0) {
-      for (let i = 0; i < this.senhas.length; i++) {
-        const senha = this.senhas[i];
-        if (senha.tipo == 'SP') {
-          this.inputNovaSenha = senha.numero;
-          this.senhas.splice(i, 1); // Remove a senha do array original
-          this.senhasChamadas.push(senha); // Adiciona a senha chamada ao array de senhas chamadas
-          this.senhaChamada = true;
-          return;
-        }
+    const tiposPrioritarios = ['SP', 'SE', 'SG'];
+
+    for (const tipo of tiposPrioritarios) {
+      const senhaIndex = this.senhas.findIndex((senha) => senha.tipo === tipo);
+      if (senhaIndex !== -1) {
+        const senha = this.senhas.splice(senhaIndex, 1)[0];
+        this.registrarSenhaChamada(senha);
+        return;
       }
-      for (let i = 0; i < this.senhas.length; i++) {
-        const senha = this.senhas[i];
-        if (senha.tipo == 'SE') {
-          this.inputNovaSenha = senha.numero;
-          this.senhas.splice(i, 1); // Remove a senha do array original
-          this.senhasChamadas.push(senha); // Adiciona a senha chamada ao array de senhas chamadas
-          this.senhaChamada = true;
-          return;
-        }
-      }
-      if (this.senhas.length > 0) {
-        const senha = this.senhas[0]; // A próxima senha é uma senha geral
-        this.inputNovaSenha = senha.numero;
-        this.senhas.shift(); // Remove a senha do array original
-        this.senhasChamadas.push(senha); // Adiciona a senha chamada ao array de senhas chamadas
-        this.senhaChamada = true;
-      } else {
-        this.inputNovaSenha = 'Não há mais senhas';
-        this.senhaChamada = false;
-      }
-    } else {
-      this.inputNovaSenha = 'Não há mais senhas';
-      this.senhaChamada = false;
     }
+
+    this.inputNovaSenha = 'Não há mais senhas';
+    this.senhaChamada = false;
+  }
+
+  registrarSenhaChamada(senha: Senha) {
+    const dataHoraChamada = new Date();
+    if (senha.dataHoraGeracao) {
+      // Verifica se senha.dataHoraGeracao é definido
+      const tempoDecorrido = this.calcularTempoDecorrido(
+        senha.dataHoraGeracao,
+        dataHoraChamada
+      );
+      senha.tempoDecorrido = tempoDecorrido;
+    }
+    this.senhasChamadas.push(senha);
+    this.inputNovaSenha = senha.numero;
+    this.senhaChamada = true;
+  }
+
+  calcularTempoDecorrido(dataHoraInicio: Date, dataHoraFim: Date): string {
+    const diffMs = Math.abs(dataHoraFim.getTime() - dataHoraInicio.getTime());
+    const diffMinutes = Math.floor(diffMs / 1000 / 60);
+    return `${diffMinutes} minutos`;
   }
 }

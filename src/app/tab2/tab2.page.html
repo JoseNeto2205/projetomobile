@@ -3,10 +3,7 @@
     <ion-input readonly="true" label="Senhas Atendidas: "></ion-input>
   </ion-card-header>
 
-  <ion-button
-    expand="block"
-    color="primary"
-    (click)="senhasService.chamarSenha()"
+  <ion-button expand="block" color="primary" (click)="chamarProximaSenha()"
     >Chamar próxima senha</ion-button
   >
 </ion-card>
@@ -17,13 +14,14 @@
   <ion-card-content>
     <ion-list-header>Senhas atendidas:</ion-list-header>
   </ion-card-content>
-  <ion-item>
+  <ion-item *ngFor="let senha of senhasService.senhasChamadas">
     <ion-icon
-      [name]="iconName(senhasService.senhasChamadas[senhasService.senhasChamadas.length - 1].tipo)"
-      [color]="iconColor(senhasService.senhasChamadas[senhasService.senhasChamadas.length - 1].tipo)"
+      [name]="iconName(senha.tipo)"
+      [color]="iconColor(senha.tipo)"
       slot="start"
     ></ion-icon>
-    <ion-label>{{ senhasService.inputNovaSenha }}</ion-label>
+    <ion-label>{{ senha.numero }}</ion-label>
+    <ion-label>{{ senha.tempoDecorrido }}</ion-label>
   </ion-item>
 </ion-card>
 
