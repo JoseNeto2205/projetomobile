@@ -1,50 +1,50 @@
-import { Component } from '@angular/core';
-import { SenhasService } from '../services/senhas.service';
-import { Senha } from '../services/senhas.service';
+import { Component, OnInit } from '@angular/core';
+import { PokeAPIService } from '../services/pokeapi.service';
+import { Tab1Page } from '../tab1/tab1.page';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
 })
-export class Tab2Page {
-  constructor(public senhasService: SenhasService) {}
+export class Tab2Page implements OnInit {
+  pokemonData: any;
+  pokemonTitleColor: string = 'black';
+  pokemonStatus: string = '';
 
-  iconName(tipo: string): string {
-    switch (tipo) {
-      case 'SG':
-        return 'accessibility';
-      case 'SP':
-        return 'bandage';
-      case 'SE':
-        return 'document';
-      default:
-        return '';
-    }
+  constructor(private pokeAPIService: PokeAPIService) {}
+
+  ngOnInit() {
+    this.loadRandomPokemon();
   }
 
-  iconColor(tipo: string): string {
-    switch (tipo) {
-      case 'SG':
-        return 'primary';
-      case 'SP':
-        return 'success';
-      case 'SE':
-        return 'warning';
-      default:
-        return '';
-    }
-  }
-
-  chamarProximaSenha() {
-    if (this.senhasService.senhas.length > 0) {
-      const senhaProxima = this.senhasService.senhas.shift(); // Remove a primeira senha da lista de senhas geradas
-      if (senhaProxima) {
-        this.senhasService.registrarSenhaChamada(senhaProxima); // Registra a senha chamada na lista de senhas atendidas
+  private loadRandomPokemon() {
+    this.pokeAPIService.getPokeAPIService().subscribe(
+      (pokemonData: any) => {
+        this.pokemonData = pokemonData;
+        this.compareAbilities();
+      },
+      (error) => {
+        console.error('Error loading random Pokemon:', error);
       }
+    );
+  }
+
+  private compareAbilities() {
+    const tab1AbilitiesCount = Tab1Page.getAbilitiesCount();
+    const tab2AbilitiesCount = this.pokemonData.abilities.length;
+
+    if (tab2AbilitiesCount === tab1AbilitiesCount) {
+      this.setPokemonStatus('yellow', 'Empate');
+    } else if (tab2AbilitiesCount > tab1AbilitiesCount) {
+      this.setPokemonStatus('green', 'Ganhou');
     } else {
-      this.senhasService.inputNovaSenha = 'Não há mais senhas';
-      this.senhasService.senhaChamada = false;
+      this.setPokemonStatus('red', 'Perdeu');
     }
+  }
+
+  private setPokemonStatus(color: string, status: string) {
+    this.pokemonTitleColor = color;
+    this.pokemonStatus = status;
   }
 }
