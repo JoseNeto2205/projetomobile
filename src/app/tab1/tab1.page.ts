@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PokeAPIService } from '../services/pokeapi.service';
 import { ViaCepService } from '../services/via-cep.service';
 import { CapturedPokemonsService } from '../services/captured-pokemons.service';
+import { Tab2Page } from '../tab2/tab2.page';
 
 @Component({
   selector: 'app-tab1',
@@ -26,7 +27,7 @@ export class Tab1Page {
     defeats: 0,
     draws: 0,
   };
-  static pokemonAbilities: number = 2;
+  static pokemonAbilities: number = 0;
 
   constructor(
     private pokeAPIService: PokeAPIService,
@@ -55,22 +56,7 @@ export class Tab1Page {
       this.pokemon.weight = data.weight;
       this.pokemon.sprite = data.sprites.other['dream_world'].front_default;
 
-      this.battleWithRandomPokemon();
-    });
-  }
-
-  private battleWithRandomPokemon() {
-    this.pokeAPIService.getPokeAPIService().subscribe((opponent: any) => {
-      const opponentAbilitiesCount = opponent.abilities.length;
-      const pokemonAbilitiesCount = this.pokemon.abilities.length;
-
-      if (pokemonAbilitiesCount > opponentAbilitiesCount) {
-        this.pokemon.victories++;
-      } else if (pokemonAbilitiesCount < opponentAbilitiesCount) {
-        this.pokemon.defeats++;
-      } else {
-        this.pokemon.draws++;
-      }
+      Tab1Page.pokemonAbilities = this.pokemon.abilities.length;
 
       const newPokemon = {
         name: this.pokemon.name,
