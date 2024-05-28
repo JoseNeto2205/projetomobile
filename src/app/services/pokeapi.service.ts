@@ -8,7 +8,7 @@ export class PokeAPIService {
   constructor(private httpClient: HttpClient) {}
 
   getPokeAPIService() {
-    const randomPokemonId = Math.floor(Math.random() * 898) + 1;
+    const randomPokemonId = Math.floor(Math.random() * 100) + 1;
     return this.httpClient.get(
       `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
     );

@@ -1,27 +1,27 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Batalhar </ion-title>
+    <ion-title>Batalha de Pokémons</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Batalha de Pokémons</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-card *ngIf="pokemonData">
     <ion-card-header>
-      <ion-card-title [ngStyle]="{'color': pokemonTitleColor}">
+      <ion-card-title [style.color]="pokemonTitleColor">
         {{ pokemonData.name | uppercase }} {{ pokemonStatus }}
       </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
       <ion-img
+        [alt]="pokemonData.name"
         [src]="pokemonData.sprites.other['dream_world'].front_default"
       ></ion-img>
-    </ion-card-header>
-
-    <ion-card-content>
       <ion-list>
         <ion-item>
           <ion-label>Habilidades: {{ pokemonData.abilities.length }}</ion-label>
@@ -35,4 +35,10 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="loadRandomPokemon()">
+      <ion-icon name="refresh"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

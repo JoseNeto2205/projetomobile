@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Pokédex </ion-title>
+    <ion-title>Pokédex</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,7 +19,7 @@
             <ion-card-title>{{ pokemon.name | uppercase }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-img [src]="pokemon.front_default"></ion-img>
+            <ion-img [src]="pokemon.sprite"></ion-img>
             <ion-item color="success">
               <ion-label>Vitórias: {{ pokemon.victories }}</ion-label>
             </ion-item>
@@ -34,10 +34,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="captureAnotherPokemon()">
-      <ion-icon name="add-circle"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

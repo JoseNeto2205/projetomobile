@@ -18,7 +18,7 @@ export class Tab2Page implements OnInit {
     this.loadRandomPokemon();
   }
 
-  private loadRandomPokemon() {
+  loadRandomPokemon() {
     this.pokeAPIService.getPokeAPIService().subscribe(
       (pokemonData: any) => {
         this.pokemonData = pokemonData;

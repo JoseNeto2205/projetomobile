@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PokeAPIService } from '../services/pokeapi.service';
+import { CapturedPokemonsService } from '../services/captured-pokemons.service';
 
 @Component({
   selector: 'app-tab3',
@@ -7,33 +8,37 @@ import { PokeAPIService } from '../services/pokeapi.service';
   styleUrls: ['tab3.page.scss'],
 })
 export class Tab3Page implements OnInit {
-  pokemon: any = {};
   capturedPokemons: any[] = [];
+  pokemon: any = {
+    name: '',
+    abilities: [],
+    height: 0,
+    weight: 0,
+    front_default: '',
+  };
 
-  constructor(private pokeAPIService: PokeAPIService) {}
+  constructor(
+    private pokeAPIService: PokeAPIService,
+    private capturedPokemonsService: CapturedPokemonsService
+  ) {}
 
   ngOnInit() {
-    this.loadPokemon();
+    this.loadCapturedPokemons();
+  }
+
+  loadCapturedPokemons() {
+    this.capturedPokemons = this.capturedPokemonsService.getPokemons();
   }
 
   loadPokemon() {
     this.pokeAPIService.getPokeAPIService().subscribe((value: any) => {
-      const newPokemon = {
-        name: value.name,
-        front_default: value.sprites.front_default,
-        abilities: value.abilities.length,
-        height: value.height,
-        weight: value.weight,
-        victories: 12,
-        defeats: 4,
-        draws: 3,
-      };
-
-      this.capturedPokemons.push(newPokemon);
+      this.pokemon.name = value.name;
+      this.pokemon.abilities = value.abilities;
+      this.pokemon.height = value.height;
+      this.pokemon.weight = value.weight;
+      this.pokemon.front_default = JSON.parse(
+        JSON.stringify(value)
+      ).sprites.front_default;
     });
-  }
-
-  captureAnotherPokemon() {
-    this.loadPokemon();
   }
 }
