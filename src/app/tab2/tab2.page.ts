@@ -37,9 +37,7 @@ export class Tab2Page implements OnInit {
 
   private compareAbilities() {
     const tab1AbilitiesCount = Tab1Page.getAbilitiesCount();
-    console.log('tab1AbilitiesCount', tab1AbilitiesCount);
     const tab2AbilitiesCount = this.pokemonData.abilities.length;
-    console.log('tab2AbilitiesCount', tab2AbilitiesCount);
 
     let result = '';
 
