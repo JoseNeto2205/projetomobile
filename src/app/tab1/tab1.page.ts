@@ -10,7 +10,7 @@ import { Tab2Page } from '../tab2/tab2.page';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page {
-  areaBuscarPokemon: string = '52011210';
+  areaBuscarPokemon: string = '';
   areaBusca: any = {
     bairro: '',
     localidade: '',
